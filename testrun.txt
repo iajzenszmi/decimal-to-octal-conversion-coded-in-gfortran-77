@@ -1,0 +1,46 @@
+ian@ian-Latitude-E7440:~$ nano oct.f
+ian@ian-Latitude-E7440:~$ gfortran oct.f -ffree-form -o oct
+ian@ian-Latitude-E7440:~$ ./oct
+ Decimal:           1 Octal:1                   
+ Decimal:           2 Octal:2                   
+ Decimal:           3 Octal:3                   
+ Decimal:           4 Octal:4                   
+ Decimal:           5 Octal:5                   
+ Decimal:           6 Octal:6                   
+ Decimal:           7 Octal:7                   
+ Decimal:           8 Octal:10                  
+ Decimal:           9 Octal:11                  
+ Decimal:          10 Octal:12                  
+ian@ian-Latitude-E7440:~$ cat oct.f
+    program OctalConversion
+    implicit none
+    integer :: i
+
+    do i = 1, 10
+        print *, 'Decimal:', i, 'Octal:', decimal_to_octal(i)
+    end do
+
+contains
+
+    function decimal_to_octal(n) result(octal)
+        implicit none
+        integer, intent(in) :: n
+        character(len=20) :: octal
+        integer :: temp, i
+        character(len=1) :: oct_digit
+
+        temp = n
+        octal = ""
+        do while (temp /= 0)
+            i = mod(temp, 8)
+            write(oct_digit, '(I1)') i
+            octal = trim(adjustl(oct_digit)) // octal
+            temp = temp / 8
+        end do
+        if (len_trim(octal) == 0) octal = "0"
+    end function decimal_to_octal
+
+end program OctalConversion
+
+ian@ian-Latitude-E7440:~$ 
+
